@@ -1,0 +1,480 @@
+openapi: 3.0.3
+info:
+  title: Test Announcement API
+  description: Test Announcement API
+  version: 1.0.0
+servers:
+  - url: https://dev.api.test.com/oms/v2
+    description: dev server
+  - url: http://local.api.test.com/oms/v2
+    description: local server
+
+tags:
+  - name: user
+    description: The user service performs operations on user
+
+paths:
+  /signup:
+    post:
+      tags:
+        - user
+      security: []
+      summary: 用户注册
+      operationId: Signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResp"
+
+  /check-email:
+    post:
+      tags:
+        - user
+      security: []
+      description: 检查邮箱是否已经注册
+      summary: 检查邮箱是否已经注册(Pending)
+      operationId: checkEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckEmailReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckEmailResp"
+
+  /login:
+    post:
+      tags:
+        - user
+      security: []
+      summary: 用户登录
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResp"
+
+  /forgot-password:
+    post:
+      tags:
+        - user
+      security: []
+      description: 忘记密码
+      summary: 忘记密码 (Pending)
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForgotPasswordResp"
+
+  /modify-password:
+    put:
+      tags:
+        - user
+      description: 修改密码
+      summary: 修改密码 (Pending)
+      operationId: modifyPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModifyPasswordReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModifyPasswordResp"
+
+  /guide-info:
+    get:
+      tags:
+        - user
+      description: 获取用户指南信息
+      summary: 获取用户指南信息
+      operationId: getGuideInfo
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuideInfoResp"
+    put:
+      tags:
+        - user
+      description: 更新用户指南信息
+      summary: 更新用户指南信息
+      operationId: updateGuideInfo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGuideInfoReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuideInfoResp"
+
+  /profile:
+    get:
+      description: 获取用户信息
+      tags:
+        - user
+      summary: 获取用户信息
+      operationId: userProfile
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInfoResp"
+
+  /link-store:
+    post:
+      description: 关联店铺
+      tags:
+        - user
+      summary: 关联店铺
+      operationId: linkStore
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LinkStoreReq"
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LinkStoreResp"
+
+components:
+  schemas:
+    UserInfo:
+      type: object
+      required: [user_id, email, username, phone, guide_finished]
+      properties:
+        user_id:
+          type: integer
+          format: int64
+          description: 用户 ID
+        email:
+          type: string
+          description: 用户邮箱
+        username:
+          type: string
+          description: 用户名
+        phone:
+          type: string
+          description: 电话
+        guide_finished:
+          type: boolean
+          description: 是否完成新手指引
+
+    SignupReq:
+      type: object
+      required:
+        - username
+        - email
+        - password
+        - phone
+      properties:
+        username:
+          type: string
+          description: 用户名
+        email:
+          type: string
+          format: email
+          description: 用户注册邮箱
+        password:
+          type: string
+          format: password
+          description: 用户注册密码
+        phone:
+          type: string
+          description: 用户手机号
+        business_platform:
+          type: string
+          description: 用户店铺所在平台
+        source:
+          type: string
+          format: url
+          description: 用户注册来源
+        source_tag:
+          type: string
+          description: 用户注册来源标签
+        store_code:
+          type: string
+          description: 关联店铺编码
+        website:
+          type: string
+          format: url
+          description: 用户店铺链接
+        concerns:
+          type: string
+          description: 用户关心的问题
+        referrer:
+          type: integer
+          description: 推荐人 ID
+
+    TokenResp:
+      type: object
+      required: [code, message, data]
+      properties:
+        code:
+          type: integer
+          description: code
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+        message:
+          type: string
+          description: message
+
+    LoginReq:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          description: 用户邮箱
+        password:
+          type: string
+          description: 用户密码
+        store_code:
+          type: string
+          description: 关联店铺编码
+
+    UserInfoResp:
+      type: object
+      required: [code, message, data]
+      properties:
+        code:
+          type: integer
+          description: code
+        data:
+          $ref: "#/components/schemas/UserInfo"
+        message:
+          type: string
+          description: message
+
+    Question:
+      type: object
+      required: [title, answer]
+      properties:
+        title:
+          type: string
+          description: 问题标题
+          enum:
+            - required_services
+            - product_categories
+            - target_markets
+            - business_platforms
+            - business_stage
+            - website
+        answer:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+          description: 问题答案
+
+    GuideInfoResp:
+      type: object
+      required: [code, message, data]
+      properties:
+        code:
+          type: integer
+          description: code
+        message:
+          type: string
+          description: message
+        data:
+          type: object
+          required: [finished, steps, questions]
+          properties:
+            finished:
+              type: boolean
+              description: 是否完成新手指引
+            steps:
+              type: array
+              description: >
+                完善信息的检查项
+                * signup - 注册完成
+                * info - 完善信息
+                * integration - 集成店铺
+              items:
+                type: object
+                required: [title, step, status]
+                properties:
+                  title:
+                    type: string
+                    description: 检查项标题
+                    enum:
+                      - signup
+                      - info
+                      - integration
+                  step:
+                    type: integer
+                    description: 检查项所在步骤
+                  status:
+                    type: string
+                    description: 检查项状态
+                    enum:
+                      - complete
+                      - incomplete
+            questions:
+              type: array
+              description: 完善信息的问题
+              items:
+                $ref: "#/components/schemas/Question"
+
+    UpdateGuideInfoReq:
+      type: object
+      properties:
+        questions:
+          type: array
+          description: 完善信息的问题
+          items:
+            $ref: "#/components/schemas/Question"
+        skip_integration:
+          type: boolean
+          description: 是否跳过集成店铺
+
+    ForgotPasswordReq:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+          description: 用户邮箱
+
+    ForgotPasswordResp:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: integer
+          description: code
+        message:
+          type: string
+          description: message
+
+    ModifyPasswordReq:
+      type: object
+      required: [password, old_password]
+      properties:
+        old_password:
+          type: string
+          format: password
+          description: 用户旧密码
+        password:
+          type: string
+          format: password
+          description: 新密码
+
+    ModifyPasswordResp:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: integer
+          description: code
+        message:
+          type: string
+          description: message
+
+    CheckEmailReq:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+          description: 用户邮箱
+
+    LinkStoreResp:
+      type: object
+      required: [code, message, data]
+      properties:
+        code:
+          type: integer
+          description: code
+        data:
+          type: object
+        message:
+          type: string
+          description: message
+
+    CheckEmailResp:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: integer
+          description: code
+        message:
+          type: string
+          description: message
+
+    LinkStoreReq:
+      type: object
+      required: [store_code, user_id]
+      properties:
+        store_code:
+          type: string
+          description: 关联店铺编码
+        user_id:
+          type: integer
+          format: int64
+          description: 用户 ID
+security:
+  - bearerAuth: []

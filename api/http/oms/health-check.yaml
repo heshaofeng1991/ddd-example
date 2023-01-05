@@ -1,0 +1,42 @@
+openapi: 3.0.3
+info:
+  title: Test Announcement API
+  description: Test Announcement API
+  version: 1.0.0
+servers:
+  - url: https://dev.api.test.com/oms/v2
+    description: dev server
+  - url: http://local.api.test.com/oms/v2
+    description: local server
+
+paths:
+  /:
+    get:
+      tags:
+        - healthy
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Resp"
+
+components:
+  schemas:
+    Resp:
+      type: object
+      required:
+        [ status, service, timestamp ]
+      properties:
+        status:
+          type: string
+          example: "OK"
+        service:
+          type: string
+          example: "wms-backend"
+        timestamp:
+          type: string
+          format: date-time
+          description: "当前时间"
+          example: "2022-04-26T00:00:00Z"

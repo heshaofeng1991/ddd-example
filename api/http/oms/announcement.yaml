@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Test Announcement API
+  description: Test Announcement API
+  version: 1.0.0
+servers:
+  - url: https://dev.api.test.com/oms/v2
+    description: dev server
+  - url: http://local.api.test.com/oms/v2
+    description: local server
+
+tags:
+  - name: Announcement
+    description: "提供公告api"
+
+paths:
+  /:
+    get:
+      tags:
+        - Announcement
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnnouncementsResp"
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Announcement:
+      type: object
+      required:
+        [ announcement_id, title, content, status, created_at, updated_at ]
+      properties:
+        announcement_id:
+          type: integer
+          description: "公告id"
+          example: 1
+        title:
+          type: string
+          description: "公告标题"
+          example: "标题"
+        content:
+          type: string
+          description: "公告内容"
+          example: "内容"
+        created_at:
+          type: string
+          format: date-time
+          description: "创建时间"
+          example: "2022-04-26T00:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          description: "更新时间"
+          example: "2022-04-26T00:00:00Z"
+        status:
+          type: integer
+          description: "公告状态1:启用 0:停用"
+          example: 1
+
+    AnnouncementsResp:
+      type: object
+      required:
+        [ code, message, data ]
+      properties:
+        code:
+          type: integer
+          description: code (错误码).
+          example: 1
+        message:
+          type: string
+          description: message (错误信息).
+          example: parameter 'p' must be an integer
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Announcement"
+security:
+  - bearerAuth: [ ]

@@ -1,0 +1,168 @@
+openapi: 3.0.3
+info:
+  title: Test Announcement API
+  description: Test Announcement API
+  version: 1.0.0
+servers:
+  - url: https://dev.api.test.com/oms/v2
+    description: dev server
+  - url: http://local.api.test.com/oms/v2
+    description: local server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /orders:
+    get:
+      operationId: getOrders
+      description: 获取所有订单
+      parameters:
+        - name: status
+          in: query
+          description: 订单状态
+          required: false
+          schema:
+            type:
+            format: int32
+      responses:
+
+
+  /orders/{orderId}:
+    get:
+      operationId: getOrderDetail
+      description: 订单详情 API
+      parameters:
+        - name: orderId
+          in: path
+          description: "order id"
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        default:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ShippingAddress:
+      type: object
+      description: 收件人地址信息
+      properties:
+        first_name:
+          type: string
+          description: 收件人姓
+        last_name:
+          type: string
+          description: 收件人名
+        phone_number:
+          type: string
+          description: 收件人电话
+        country_name:
+          type: string
+          description: 收件人国家
+        country_code:
+          type: string
+          description: 收件人国家代码
+        state_name:
+          type: string
+          description: 收件人省份
+        state_code:
+          type: string
+          description: 收件人省份代码
+        city_name:
+          type: string
+          description: 收件人城市
+        address_line1:
+          type: string
+          description: 收件人地址
+        address_line2:
+          type: string
+          description: 收件人地址2
+        postal_code:
+          type: string
+          description: 收件人邮编
+    OrderItem:
+      type: object
+      properties:
+        sku:
+          type: string
+          description: 商品SKU
+        barcode:
+          type: string
+          description: 商品条码
+        quantity:
+          type: integer
+          description: 商品数量
+        name:
+          type: string
+          description: 商品名称
+        declared_cn_name:
+          type: string
+          description: 商品中文申报名
+        declared_en_name:
+          type: string
+          description: 商品英文申报名
+        declared_value_in_usd:
+          type: number
+          description: 商品美元价值
+        declared_value_in_eur:
+          type: number
+          description: 商品欧元价值
+        selling_price:
+          type: number
+          description: 商品销售价格
+        hs_code:
+          type: string
+          description: 商品海关编码
+        attributes:
+          type: array
+          items:
+            type: string
+          description: 商品属性集合
+        weight:
+          type: number
+          description: 商品重量（g)
+        length:
+          type: number
+          description: 商品长度 (mm)
+        width:
+          type: number
+          description: 商品宽度 (mm)
+        height:
+          type: number
+          description: 商品高度 (mm)
+
+
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: string
+          description: 订单唯一标识
+
+        shipping_address:
+          $ref: '#/components/schemas/ShippingAddress'
+        items:
+          type: array
+          description: 订单子项
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        created_at:
+          type: string
+          format: date-time
+          description: 用户创建时间
+        updated_at:
+          type: string
+          format: date-time
+          description: 用户更新时间
+

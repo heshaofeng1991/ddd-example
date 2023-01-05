@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  title: Test Announcement API
+  description: Test Announcement API
+  version: 1.0.0
+servers:
+  - url: https://dev.api.test.com/oms/v2
+    description: dev server
+  - url: http://local.api.test.com/oms/v2
+    description: local server
+
+tags:
+  - name: product
+    description: Product management operations
+
+paths:
+  /product:
+    post:
+      tags:
+        - product
+      description: 创建产品
+      security: []
+      summary: 创建产品
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequestBody'
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BaseResponse"
+
+  /product/{id}:
+    put:
+      tags:
+        - product
+      description: 更新产品
+      security: []
+      summary: 更新产品
+      operationId: updateProduct
+      parameters:
+        - name: id
+          in: path
+          description: 产品ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequestBody'
+      responses:
+        "200":
+          description: OK response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BaseResponse"
+
+components:
+  schemas:
+    CreateProductRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Product name
+          example: Test 1
+        sku:
+          type: string
+          description: Product SKU
+          example: SKU-0001
+        barcode:
+          type: string
+          description: Product Barcode
+          example: N0000341012X
+        declared_name:
+          type: string
+          description: Declared english name
+          example: Test product 1
+        declared_cn_name:
+          type: string
+          description: Declared chinese name
+          example: 测试产品1
+        declared_value_in_eur:
+          type: number
+          description: Declared value in EUR
+          example: 479.0
+          minimum: 0
+        declared_value_in_usd:
+          type: number
+          description: Declared value in USD
+          example: 500.00
+          minimum: 0
+        grams:
+          type: number
+          description: Product Weight(g)
+          example: 500
+          minimum: 0
+        length:
+          type: number
+          description: Product Length(mm)
+          example: 100.00
+          minimum: 0
+        width:
+          type: number
+          description: Product Width(mm)
+          example: 100.00
+          minimum: 0
+        height:
+          type: number
+          description: Product Height(mm)
+          example: 100.00
+          minimum: 0
+        type_of_goods:
+          type: number
+          description: Type of Goods (0=> pack; 1=> letter)
+          example: 0
+          minimum: 0
+        cat_id_level2:
+          type: number
+          description: Product Level3 Category
+          example: 602276
+          minimum: 0
+        branded:
+          type: number
+          description: Is it a brand (0=> No; 1=> Yes)
+          example: 0
+          minimum: 0
+        product_link:
+          type: string
+          description: Product Link
+          example:
+          - product_link_url
+        export_country:
+          type: object
+          properties:
+            country_code:
+              type: string
+              description: Export Country Code
+              example: CN
+            declared_value:
+              type: number
+              description: Export Declared value
+              example: 150
+              minimum: 0
+        import_country:
+          type: object
+          properties:
+            country_code:
+              type: string
+              description: Import Country Code
+              example: US
+            declared_value:
+              type: number
+              description: Import Declared value
+              example: 20
+              minimum: 0
+        images:
+          type: array
+          items:
+            type: string
+            example: Dolores ipsum aut dolorem.
+          description: Product Image(s)
+          example:
+          - image_url1
+          - image_url2
+        attributes:
+          type: array
+          items:
+            type: string
+            example: Quos tempore quia et repellendus.
+          description: Product Attribute(s)
+          example:
+          - battery
+          - cosmetic
+          - liquid
+          - magnetic
+        hs_code:
+          type: string
+          description: HS Code
+          example: 1232082343
+        material:
+          type: string
+          description: Product Material
+          example: 电子产品
+        purpose:
+          type: string
+          description: Product Purpose
+          example: 娱乐通讯
+        barcode_service:
+          type: boolean
+          description: Barcode Service
+          example: false
+          enum:
+          - false
+          - true
+
+    UpdateProductRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Product name
+          example: Test 1
+        sku:
+          type: string
+          description: Product SKU
+          example: SKU-0001
+        barcode:
+          type: string
+          description: Product Barcode
+          example: N0000341012X
+        declared_name:
+          type: string
+          description: Declared english name
+          example: Test product 1
+        declared_cn_name:
+          type: string
+          description: Declared chinese name
+          example: 测试产品1
+        declared_value_in_eur:
+          type: number
+          description: Declared value in EUR
+          example: 479.0
+          minimum: 0
+        declared_value_in_usd:
+          type: number
+          description: Declared value in USD
+          example: 500.00
+          minimum: 0
+        grams:
+          type: number
+          description: Product Weight(g)
+          example: 500
+          minimum: 0
+        length:
+          type: number
+          description: Product Length(mm)
+          example: 100.00
+          minimum: 0
+        width:
+          type: number
+          description: Product Width(mm)
+          example: 100.00
+          minimum: 0
+        height:
+          type: number
+          description: Product Height(mm)
+          example: 100.00
+          minimum: 0
+        type_of_goods:
+          type: number
+          description: Type of Goods (0=> pack; 1=> letter)
+          example: 0
+          minimum: 0
+        cat_id_level2:
+          type: number
+          description: Product Level3 Category
+          example: 602276
+          minimum: 0
+        branded:
+          type: number
+          description: Is it a brand (0=> No; 1=> Yes)
+          example: 0
+          minimum: 0
+        product_link:
+          type: string
+          description: Product Link
+          example:
+          - product_link_url
+        export_country:
+          type: object
+          properties:
+            country_code:
+              type: string
+              description: Export Country Code
+              example: CN
+            declared_value:
+              type: number
+              description: Export Declared value
+              example: 150
+              minimum: 0
+        import_country:
+          type: object
+          properties:
+            country_code:
+              type: string
+              description: Import Country Code
+              example: US
+            declared_value:
+              type: number
+              description: Import Declared value
+              example: 20
+              minimum: 0
+        images:
+          type: array
+          items:
+            type: string
+            example: Dolores ipsum aut dolorem.
+          description: Product Image(s)
+          example:
+          - image_url1
+          - image_url2
+        attributes:
+          type: array
+          items:
+            type: string
+            example: Quos tempore quia et repellendus.
+          description: Product Attribute(s)
+          example:
+          - battery
+          - cosmetic
+          - liquid
+          - magnetic
+        hs_code:
+          type: string
+          description: HS Code
+          example: 1232082343
+        material:
+          type: string
+          description: Product Material
+          example: 电子产品
+        purpose:
+          type: string
+          description: Product Purpose
+          example: 娱乐通讯
+        barcode_service:
+          type: boolean
+          description: Barcode Service
+          example: false
+          enum:
+          - false
+          - true
+
+    BaseResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: code
+          example: 0
+          format: int64
+        message:
+          type: string
+          description: message
+          example: description error information
+      example:
+        code: 0
+        message: description error information
+      required:
+      - code
+      - message
+
+security:
+  - bearerAuth: []
